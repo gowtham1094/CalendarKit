@@ -70,6 +70,10 @@ final class CustomCalendarExampleController: DayViewController {
     // MARK: EventDataSource
 
     override func eventsForDate(_ date: Date) -> [EventDescriptor] {
+        if Calendar.current.isDateInTomorrow(date) {
+          return []
+        }
+      
         if !alreadyGeneratedSet.contains(date) {
             alreadyGeneratedSet.insert(date)
             generatedEvents.append(contentsOf: generateEventsForDate(date))
@@ -184,6 +188,7 @@ final class CustomCalendarExampleController: DayViewController {
     }
 
     override func dayView(dayView: DayView, didMoveTo date: Date) {
+        super.dayView(dayView: dayView, didMoveTo: date)
         print("DayView = \(dayView) did move to: \(date)")
     }
 
@@ -231,4 +236,10 @@ final class CustomCalendarExampleController: DayViewController {
 
         reloadData()
     }
+  
+  override func getEmptyView(forDate: Date) -> UIView? {
+    let view = UIView()
+    view.backgroundColor = UIColor.red
+    return view
+  }
 }

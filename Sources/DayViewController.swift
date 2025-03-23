@@ -2,6 +2,7 @@ import UIKit
 
 open class DayViewController: UIViewController, EventDataSource, DayViewDelegate {
     public lazy var dayView: DayView = DayView()
+    private var emptyView: UIView?
     public var dataSource: EventDataSource? {
         get {
             dayView.dataSource
@@ -92,8 +93,24 @@ open class DayViewController: UIViewController, EventDataSource, DayViewDelegate
     open func dayViewDidBeginDragging(dayView: DayView) {}
     open func dayViewDidTransitionCancel(dayView: DayView) {}
 
-    open func dayView(dayView: DayView, willMoveTo date: Date) {}
-    open func dayView(dayView: DayView, didMoveTo date: Date) {}
+    open func dayView(dayView: DayView, willMoveTo date: Date) { }
+    open func dayView(dayView: DayView, didMoveTo date: Date) {
+        emptyView?.removeFromSuperview()
+        
+        guard let dataSource,
+        dataSource.eventsForDate(date).isEmpty,
+        let emptyView = getEmptyView(forDate: date) else { return }
+        
+        emptyView.translatesAutoresizingMaskIntoConstraints = false
+        dayView.timelinePagerView.addSubview(emptyView)
+        NSLayoutConstraint.activate([
+            emptyView.leadingAnchor.constraint(equalTo: dayView.timelinePagerView.leadingAnchor),
+            emptyView.trailingAnchor.constraint(equalTo: dayView.timelinePagerView.trailingAnchor),
+            emptyView.topAnchor.constraint(equalTo: dayView.timelinePagerView.topAnchor),
+            emptyView.bottomAnchor.constraint(equalTo: dayView.timelinePagerView.bottomAnchor),
+        ])
+        self.emptyView = emptyView
+    }
 
     open func dayView(dayView: DayView, didLongPressTimelineAt date: Date) {}
     open func dayView(dayView: DayView, didUpdate event: EventDescriptor) {}
@@ -111,4 +128,6 @@ open class DayViewController: UIViewController, EventDataSource, DayViewDelegate
     open func endEventEditing() {
         dayView.endEventEditing()
     }
+    
+    open func getEmptyView(forDate : Date) -> UIView? { return nil }
 }
