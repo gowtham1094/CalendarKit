@@ -30,8 +30,9 @@ public class DayView: UIView, TimelinePagerViewDelegate {
         didSet {
             headerHeight = isHeaderViewVisible ? DayView.headerVisibleHeight : 0
             dayHeaderView.isHidden = !isHeaderViewVisible
+            headerViewHeightConstraint?.constant = headerHeight
             setNeedsLayout()
-            configureLayout()
+            layoutIfNeeded()
         }
     }
     
@@ -73,6 +74,8 @@ public class DayView: UIView, TimelinePagerViewDelegate {
     }
     
     private var style = CalendarStyle()
+    
+    private weak var headerViewHeightConstraint: NSLayoutConstraint?
     
     public init(calendar: Calendar = Calendar.autoupdatingCurrent) {
         self.calendar = calendar
@@ -119,6 +122,7 @@ public class DayView: UIView, TimelinePagerViewDelegate {
         let heightConstraint = dayHeaderView.heightAnchor.constraint(equalToConstant: headerHeight)
         heightConstraint.priority = .defaultLow
         heightConstraint.isActive = true
+        self.headerViewHeightConstraint = heightConstraint
         
         timelinePagerView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
         timelinePagerView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
