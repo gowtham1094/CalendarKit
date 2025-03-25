@@ -7,6 +7,7 @@ public protocol DayViewDelegate: AnyObject {
     func dayView(dayView: DayView, didLongPressTimelineAt date: Date)
     func dayViewDidBeginDragging(dayView: DayView)
     func dayViewDidTransitionCancel(dayView: DayView)
+    func dayView(dayView: DayView, didScrolled : UIScrollView)
     func dayView(dayView: DayView, willMoveTo date: Date)
     func dayView(dayView: DayView, didMoveTo  date: Date)
     func dayView(dayView: DayView, didUpdate event: EventDescriptor)
@@ -111,14 +112,14 @@ public class DayView: UIView, TimelinePagerViewDelegate {
     private func configureLayout() {
         dayHeaderView.translatesAutoresizingMaskIntoConstraints = false
         timelinePagerView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         dayHeaderView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
         dayHeaderView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
         dayHeaderView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         let heightConstraint = dayHeaderView.heightAnchor.constraint(equalToConstant: headerHeight)
         heightConstraint.priority = .defaultLow
         heightConstraint.isActive = true
-
+        
         timelinePagerView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
         timelinePagerView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
         timelinePagerView.topAnchor.constraint(equalTo: dayHeaderView.bottomAnchor).isActive = true
@@ -196,5 +197,8 @@ public class DayView: UIView, TimelinePagerViewDelegate {
     }
     public func timelinePager(timelinePager: TimelinePagerView, didUpdate event: EventDescriptor) {
         delegate?.dayView(dayView: self, didUpdate: event)
+    }
+    public func timelinePager(timelinePager: TimelinePagerView, didScrolled scrollView: UIScrollView) {
+        delegate?.dayView(dayView: self, didScrolled: scrollView)
     }
 }

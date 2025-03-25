@@ -8,6 +8,7 @@ public protocol TimelinePagerViewDelegate: AnyObject {
     func timelinePagerDidTransitionCancel(timelinePager: TimelinePagerView)
     func timelinePager(timelinePager: TimelinePagerView, willMoveTo date: Date)
     func timelinePager(timelinePager: TimelinePagerView, didMoveTo  date: Date)
+    func timelinePager(timelinePager: TimelinePagerView, didScrolled scrollView: UIScrollView)
     func timelinePager(timelinePager: TimelinePagerView, didLongPressTimelineAt date: Date)
 
     // Editing
@@ -164,6 +165,8 @@ public final class TimelinePagerView: UIView, UIGestureRecognizerDelegate, UIScr
     }
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.delegate?.timelinePager(timelinePager: self, didScrolled: scrollView)
+        
         let offset = scrollView.contentOffset
         let diff = offset.y - initialContentOffset.y
         if let event = editedEventView {

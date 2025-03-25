@@ -74,6 +74,10 @@ final class CustomCalendarExampleController: DayViewController {
           return []
         }
       
+      if Calendar.current.isDateInToday(date) {
+        return []
+      }
+      
         if !alreadyGeneratedSet.contains(date) {
             alreadyGeneratedSet.insert(date)
             generatedEvents.append(contentsOf: generateEventsForDate(date))
@@ -241,5 +245,9 @@ final class CustomCalendarExampleController: DayViewController {
     let view = UIView()
     view.backgroundColor = UIColor.red
     return view
+  }
+  
+  override func dayView(dayView: DayView, didScrolled : UIScrollView) {
+    print("didScrolled ")
   }
 }
