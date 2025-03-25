@@ -133,13 +133,13 @@ public extension DayViewController {
         let emptyView = getEmptyView(forDate: date) else { return }
         
         emptyView.translatesAutoresizingMaskIntoConstraints = false
-        dayView.addSubview(emptyView)
+        dayView.timelinePagerView.addSubview(emptyView)
         NSLayoutConstraint.activate(
             [
-                emptyView.leadingAnchor.constraint(equalTo: dayView.leadingAnchor),
-                emptyView.trailingAnchor.constraint(equalTo: dayView.trailingAnchor),
-                emptyView.topAnchor.constraint(equalTo: dayView.topAnchor),
-                emptyView.bottomAnchor.constraint(equalTo: dayView.bottomAnchor),
+                emptyView.leadingAnchor.constraint(equalTo: dayView.timelinePagerView.leadingAnchor),
+                emptyView.trailingAnchor.constraint(equalTo: dayView.timelinePagerView.trailingAnchor),
+                emptyView.topAnchor.constraint(equalTo: dayView.timelinePagerView.topAnchor),
+                emptyView.bottomAnchor.constraint(equalTo: dayView.timelinePagerView.bottomAnchor),
             ]
         )
         self.emptyView = emptyView
